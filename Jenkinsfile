@@ -33,16 +33,14 @@ pipeline {
             steps {
                 script {
                     echo "Pushing Docker Image: ${DOCKER_IMAGE}"
-                    docker.withRegistry(
-                        "https://${DOCKER_REGISTRY}",
-                        "${DOCKER_CREDENTIALS}"
-                    ) {
-                        dockerImage.push()
-                        dockerImage.push("latest")
+                    withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS}", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                        sh 'echo $DOCKER_PASS | docker login ${DOCKER_REGISTRY} -u $DOCKER_USER --password-stdin'
+                        sh "docker push ${DOCKER_IMAGE}"
+                        sh "docker push ${DOCKER_REGISTRY}/${DOCKER_USERNAME}/${APP_NAME}:latest"
                     }
 
                     echo "Successfully pushed Docker Image: ${DOCKER_IMAGE}"
-                    echo "also tagged: ${DOCKER_REGISTRY}/${APP_NAME}:latest"
+                    echo "Also tagged: ${DOCKER_REGISTRY}/${DOCKER_USERNAME}/${APP_NAME}:latest"
                 }
             }
         }
