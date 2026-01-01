@@ -6,6 +6,7 @@ pipeline {
         DOCKER_REGISTRY='docker.io'
         DOCKER_CREDENTIALS='docker-credentials'
         DOCKER_IMAGE="${DOCKER_REGISTRY}/${APP_NAME}:${COMMIT_SHA}"
+        DOCKER_USERNAME=credentials('docker-credentials').username
     }
 
     stages {
@@ -24,6 +25,24 @@ pipeline {
                         "./app"
                     )
                     sh 'docker tag ${DOCKER_IMAGE} ${DOCKER_REGISTRY}/${APP_NAME}:latest'
+                }
+            }
+        }
+
+        stage("Push docker image") {
+            steps {
+                script {
+                    echo "Pushing Docker Image: ${DOCKER_IMAGE}"
+                    docker.withRegistry(
+                        "https://${DOCKER_REGISTRY}",
+                        "${DOCKER_CREDENTIALS}"
+                    ) {
+                        dockerImage.push()
+                        dockerImage.push("latest")
+                    }
+
+                    echo "Successfully pushed Docker Image: ${DOCKER_IMAGE}"
+                    echo "also tagged: ${DOCKER_REGISTRY}/${APP_NAME}:latest"
                 }
             }
         }
