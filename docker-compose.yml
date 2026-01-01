@@ -1,0 +1,48 @@
+# ! This Docker Compose is for local running with docker
+
+services:
+  api:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    container_name: pulse-api
+    restart: unless-stopped
+    ports:
+      - "8585:8585"
+    environment:
+      - NODE_ENV=production
+      - PORT=8585
+      - DATABASE_URL=postgresql://devuser:devpass@db:5432/devdb
+      - LOG_LEVEL=info
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:8585/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  db:
+    image: postgres:16-alpine
+    container_name: pulse-db
+    restart: always
+    environment:
+      - POSTGRES_USER=devuser
+      - POSTGRES_PASSWORD=devpass
+      - POSTGRES_DB=devdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./app/scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U devuser -d devdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+volumes:
+  postgres_data:

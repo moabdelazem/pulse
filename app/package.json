@@ -1,0 +1,66 @@
+{
+  "name": "pulse-api",
+  "version": "1.0.0",
+  "description": "Project and task management API for DevOps and SRE workflows",
+  "main": "dist/server.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/moabdelazem/pulse.git"
+  },
+  "bugs": {
+    "url": "https://github.com/moabdelazem/pulse/issues"
+  },
+  "homepage": "https://github.com/moabdelazem/pulse#readme",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/server.ts",
+    "lint": "eslint 'src/**/*.ts'",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio",
+    "migrate:run": "node dist/db/migrate.js"
+  },
+  "keywords": [
+    "api",
+    "rest",
+    "express",
+    "typescript",
+    "postgresql",
+    "drizzle-orm",
+    "devops",
+    "sre",
+    "project-management"
+  ],
+  "author": "Mohamed Abdelazim",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "drizzle-orm": "^0.45.1",
+    "drizzle-zod": "^0.8.3",
+    "express": "^5.2.1",
+    "pg": "^8.16.3",
+    "pino": "^10.1.0",
+    "pino-http": "^11.0.0",
+    "zod": "^4.3.3"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.2",
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.0.3",
+    "@types/pg": "^8.16.0",
+    "drizzle-kit": "^0.31.8",
+    "eslint": "^9.39.2",
+    "globals": "^16.5.0",
+    "nodemon": "^3.1.11",
+    "pino-pretty": "^13.1.3",
+    "prettier": "^3.7.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.51.0"
+  }
+}
