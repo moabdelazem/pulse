@@ -126,6 +126,8 @@ src/
 - [x] 404 error handling
 - [x] Global error handler middleware
 - [x] Docker containerization for the API
+- [x] CI/CD pipeline With Jenkins
+- [x] Swagger/OpenAPI documentation
 
 ## Roadmap
 
@@ -134,7 +136,5 @@ src/
 - [ ] API versioning
 - [ ] Pagination for list endpoints
 - [ ] Filtering and sorting
-- [ ] Swagger/OpenAPI documentation
 - [ ] Unit and integration tests
-- [ ] CI/CD pipeline With Jenkins
 - [ ] Prometheus metrics endpoint

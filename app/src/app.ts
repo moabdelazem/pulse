@@ -1,11 +1,13 @@
 import express from "express";
 import { sql } from "drizzle-orm";
 import pinoHttp from "pino-http";
+import { apiReference } from "@scalar/express-api-reference";
 import routes from "./routes";
 import { db } from "./db";
 import { errorHandler } from "./middlewares/errorHandler";
 import { notFoundHandler } from "./middlewares/notFound";
 import { logger } from "./utils/logger";
+import { openApiSpec } from "./config/openapi";
 
 const app = express();
 
@@ -45,7 +47,19 @@ app.use(
 
 app.use(express.json());
 
-app.get("/health", async (req, res) => {
+/**
+ * @openapi
+ * /health:
+ *   get:
+ *     summary: Health check endpoint
+ *     tags: [Health]
+ *     responses:
+ *       200:
+ *         description: Service is healthy
+ *       503:
+ *         description: Service is unhealthy
+ */
+app.get("/api/health", async (req, res) => {
   try {
     await db.execute(sql`SELECT 1`);
     res.json({
@@ -61,6 +75,21 @@ app.get("/health", async (req, res) => {
     });
   }
 });
+
+// OpenAPI specification endpoint
+app.get("/openapi.json", (req, res) => {
+  res.json(openApiSpec);
+});
+
+// Scalar API documentation
+app.use(
+  "/docs",
+  apiReference({
+    spec: {
+      content: openApiSpec,
+    },
+  })
+);
 
 // API routes
 app.use("/api", routes);
