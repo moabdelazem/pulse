@@ -1,12 +1,12 @@
 pipeline {
     agent any
     environment {
-        APP_NAME='pulse'
-        COMMIT_SHA=sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-        DOCKER_REGISTRY='docker.io'
-        DOCKER_CREDENTIALS='docker-credentials'
-        DOCKER_IMAGE="${DOCKER_REGISTRY}/${APP_NAME}:${COMMIT_SHA}"
-        DOCKER_USERNAME=credentials('docker-credentials').username
+        APP_NAME = 'pulse'
+        DOCKER_USERNAME = 'moabdelazem'
+        COMMIT_SHA = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+        DOCKER_REGISTRY = 'docker.io'
+        DOCKER_CREDENTIALS = 'docker-credentials'
+        DOCKER_IMAGE = "${DOCKER_REGISTRY}/${DOCKER_USERNAME}/${APP_NAME}:${COMMIT_SHA}"
     }
 
     stages {
@@ -24,7 +24,7 @@ pipeline {
                         "${DOCKER_IMAGE}",
                         "./app"
                     )
-                    sh 'docker tag ${DOCKER_IMAGE} ${DOCKER_REGISTRY}/${APP_NAME}:latest'
+                    sh "docker tag ${DOCKER_IMAGE} ${DOCKER_REGISTRY}/${DOCKER_USERNAME}/${APP_NAME}:latest"
                 }
             }
         }
@@ -50,8 +50,9 @@ pipeline {
         stage("Cleanup local docker image") {
             steps {
                 script {
-                    echo "Cleaning up local docker image: ${DOCKER_IMAGE}"
-                    sh 'docker rmi ${DOCKER_IMAGE}'
+                    echo "Cleaning up local docker images"
+                    sh "docker rmi ${DOCKER_IMAGE}"
+                    sh "docker rmi ${DOCKER_REGISTRY}/${DOCKER_USERNAME}/${APP_NAME}:latest"
                 }
             }
         }
