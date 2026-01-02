@@ -21,7 +21,7 @@ spec:
                 name: pulse-database-secret
       containers:
         - name: pulse
-          image: moabdelazem/pulse:0a059cd
+          image: moabdelazem/pulse:latest
           ports:
             - containerPort: 8585
           envFrom:
@@ -38,13 +38,13 @@ spec:
               cpu: "128m"
           livenessProbe:
             httpGet:
-              path: /health
+              path: /api/health
               port: 8585
             initialDelaySeconds: 5
             periodSeconds: 10
           readinessProbe:
             httpGet:
-              path: /health
+              path: /api/health
               port: 8585
             initialDelaySeconds: 5
             periodSeconds: 10
