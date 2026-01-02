@@ -90,7 +90,12 @@ const options: swaggerJsdoc.Options = {
       },
     },
   },
-  apis: ["./src/routes/*.ts", "./src/app.ts"],
+  apis: [
+    "./src/routes/*.ts",
+    "./src/app.ts",
+    "./dist/routes/*.js",
+    "./dist/app.js",
+  ],
 };
 
 export const openApiSpec = swaggerJsdoc(options);
