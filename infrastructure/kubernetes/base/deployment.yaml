@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pulse-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: pulse
+  template:
+    metadata:
+      labels:
+        app: pulse
+    spec:
+      initContainers:
+        - name: run-migrations
+          image: moabdelazem/pulse:0a059cd
+          command: ["node", "dist/db/migrate.js"]
+          envFrom:
+            - secretRef:
+                name: pulse-database-secret
+      containers:
+        - name: pulse
+          image: moabdelazem/pulse:0a059cd
+          ports:
+            - containerPort: 8585
+          envFrom:
+            - configMapRef:
+                name: pulse-configmap
+            - secretRef:
+                name: pulse-database-secret
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "256m"
+            requests:
+              memory: "256Mi"
+              cpu: "128m"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8585
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8585
+            initialDelaySeconds: 5
+            periodSeconds: 10
+      

@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: pulse-database-svc
+spec:
+  type: ClusterIP
+  clusterIP: None
+  selector:
+    app: database
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pulse-svc
+spec:
+  type: NodePort
+  selector:
+    app: pulse
+  ports:
+    - protocol: TCP
+      port: 8585
+      targetPort: 8585
+      nodePort: 30001
