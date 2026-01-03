@@ -23,6 +23,7 @@ pipeline {
                 }
             }
             steps {
+                sh 'cd app && npm install'
                 sh 'cd app && npm run lint'
             }
         }
