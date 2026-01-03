@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import { sql } from "drizzle-orm";
 import pinoHttp from "pino-http";
 import { apiReference } from "@scalar/express-api-reference";
@@ -10,6 +11,17 @@ import { logger } from "./utils/logger";
 import { openApiSpec } from "./config/openapi";
 
 const app = express();
+
+// CORS middleware - enables cross-origin requests for frontend applications
+app.use(
+  cors({
+    origin: process.env.CORS_ORIGIN || "*", // Allow configurable origins or all by default
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
+    credentials: true, // Allow cookies and authentication headers
+    maxAge: 86400, // Cache preflight requests for 24 hours
+  })
+);
 
 app.use(
   pinoHttp({

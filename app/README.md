@@ -6,6 +6,7 @@ Pulse is a project and task management API designed for applying DevOps and SRE 
 
 - Project management with repository URL tracking
 - Task management with status workflow (todo, in_progress, completed, backlog)
+- **CORS middleware for frontend integration**
 - Production-ready structured JSON logging with Pino
 - Request validation using Zod schemas
 - Health check endpoint with database connectivity verification
@@ -56,6 +57,7 @@ npm run dev
 | NODE_ENV | Environment (development/production) | development |
 | DATABASE_URL | PostgreSQL connection string | - |
 | LOG_LEVEL | Logging level (fatal/error/warn/info/debug/trace) | info |
+| CORS_ORIGIN | Allowed origins for CORS (use * for all or comma-separated URLs) | * |
 
 ## API Reference
 
