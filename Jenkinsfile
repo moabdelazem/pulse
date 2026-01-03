@@ -20,7 +20,6 @@ pipeline {
             agent {
                 docker {
                     image 'node:24-bookworm-slim'
-                    args '-u 1000:1000'
                 }
             }
             steps {
