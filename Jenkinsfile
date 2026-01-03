@@ -19,12 +19,17 @@ pipeline {
         stage("Lint") {
             agent {
                 docker {
-                    image 'node:24-bookworm-slim'
+                    image 'node:22-bookworm-slim'
+                    reuseNode true
                 }
+            }
+            environment {
+                NPM_CONFIG_CACHE = '${WORKSPACE}/npm-cache'
             }
             steps {
                 dir('app') {
                     sh '''
+                        rm -rf node_modules
                         npm ci
                         npm run lint
                     '''
