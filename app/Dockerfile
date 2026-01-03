@@ -11,26 +11,25 @@ COPY src ./src
 
 RUN npm run build
 
+# Install production dependencies only
+RUN npm ci --omit=dev && npm cache clean --force
+
 # Production Stage
-FROM node:24-bookworm-slim AS production
+FROM gcr.io/distroless/nodejs24-debian12 AS production
 
 WORKDIR /app
 
 ENV NODE_ENV=production
 
-RUN addgroup --system --gid 1001 nodejs && \
-    adduser --system --uid 1001 pulse
-
-COPY package*.json ./
-RUN npm ci --omit=dev && npm cache clean --force
-
+COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/package.json ./package.json
 
 # Include drizzle SQL migrations folder for programmatic migrations
 COPY drizzle ./drizzle
 
-USER pulse
+USER nonroot
 
 EXPOSE 8585
 
-CMD ["node", "dist/server.js"]
+CMD ["dist/server.js"]
