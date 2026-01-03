@@ -24,7 +24,7 @@ pipeline {
                 }
             }
             environment {
-                NPM_CONFIG_CACHE = '${WORKSPACE}/npm-cache'
+                NPM_CONFIG_CACHE = '${WORKSPACE}/.npm-cache'
             }
             steps {
                 dir('app') {
