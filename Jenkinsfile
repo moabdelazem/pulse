@@ -16,6 +16,18 @@ pipeline {
             }
         }
 
+        stage("Lint") {
+            agent {
+                docker {
+                    image 'node:24-bookworm-slim'
+                    args '-u 1000:1000'
+                }
+            }
+            steps {
+                sh 'npm run lint'
+            }
+        }
+
         stage("Build the docker image") {
             steps {
                 script {

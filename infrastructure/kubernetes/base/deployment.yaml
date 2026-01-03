@@ -14,7 +14,7 @@ spec:
     spec:
       initContainers:
         - name: run-migrations
-          image: moabdelazem/pulse:0a059cd
+          image: moabdelazem/pulse:latest
           command: ["node", "dist/db/migrate.js"]
           envFrom:
             - secretRef:
