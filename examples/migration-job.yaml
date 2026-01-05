@@ -41,7 +41,7 @@ spec:
         - name: migrate
           image: pulse-api:latest
           imagePullPolicy: IfNotPresent
-          command: ["npm", "run", "migrate:run"]
+          command: ["/nodejs/bin/node", "dist/db/migrate.js"]
           env:
             - name: DATABASE_URL
               valueFrom:

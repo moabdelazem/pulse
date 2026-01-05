@@ -15,7 +15,7 @@ spec:
       initContainers:
         - name: run-migrations
           image: moabdelazem/pulse:latest
-          command: ["node", "dist/db/migrate.js"]
+          command: ["/nodejs/bin/node", "dist/db/migrate.js"]
           envFrom:
             - secretRef:
                 name: pulse-database-secret
