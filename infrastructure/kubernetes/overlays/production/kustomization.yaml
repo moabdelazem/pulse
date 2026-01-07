@@ -40,6 +40,12 @@ configMapGenerator:
     literals:
       - LOG_LEVEL=warn
 
+secretGenerator:
+  - name: pulse-database-secret
+    behavior: merge
+    literals:
+      - DATABASE_URL=postgresql://devuser:devpass@prod-pulse-database-svc:5432/devdb
+
 # Pin production image to a specific tag
 images:
   - name: moabdelazem/pulse
