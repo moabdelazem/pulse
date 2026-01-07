@@ -24,4 +24,3 @@ spec:
     - protocol: TCP
       port: 8585
       targetPort: 8585
-      nodePort: 30001
