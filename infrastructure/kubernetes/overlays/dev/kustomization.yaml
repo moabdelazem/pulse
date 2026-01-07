@@ -39,3 +39,9 @@ configMapGenerator:
     behavior: merge
     literals:
       - LOG_LEVEL=debug
+
+secretGenerator:
+  - name: pulse-database-secret
+    behavior: merge
+    literals:
+      - DATABASE_URL=postgresql://devuser:devpass@dev-pulse-database-svc:5432/devdb

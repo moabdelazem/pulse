@@ -43,4 +43,4 @@ configMapGenerator:
 # Pin production image to a specific tag
 images:
   - name: moabdelazem/pulse
-    newTag: v1.0.0
+    newTag: latest
